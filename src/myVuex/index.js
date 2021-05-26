@@ -56,6 +56,58 @@ class Store {
   }
 }
 /**
+ * 辅助函数 解构在computed上
+ * @param arr 传入属性名数组
+ * @return {{}}
+ */
+export const mapState = function mapState (arr = []) {
+  const obj = {}
+  arr.forEach(key => {
+    obj[key] = function () {
+      return this.$store.state[key]
+    }
+  })
+  return obj
+}
+/**
+ * 辅助函数 解构在computed上
+ * @param arr 传入属性名数组
+ * @return {{}}
+ */
+export const mapGetters = function mapMutations (arr = []) {
+  const obj = {}
+  arr.forEach(key => {
+    obj[key] = function () {
+      return this.$store.getters[key]
+    }
+  })
+  return obj
+}
+/**
+ * 辅助函数 解构在methods上
+ * @param arr 传入属性名数组
+ * @return {{}}
+ */
+export const mapMutations = function mapMutations (arr = []) {
+  const obj = {}
+  arr.forEach(key => {
+    obj[key] = function (params) {
+      return this.$store.commit(key, params)
+    }
+  })
+  return obj
+}
+
+export const mapActions = function mapMutations (arr = []) {
+  const obj = {}
+  arr.forEach(key => {
+    obj[key] = function (params) {
+      return this.$store.dispatch(key, params)
+    }
+  })
+  return obj
+}
+/**
  * 1. 通过vue mixin全局混入beforeCreate生命周期函数, 把store混入到每一个组件上
  * 2. 如果当前组件有$store说明属于根组件
  * 3. 否则属于子孙组件赋值$store
@@ -74,6 +126,7 @@ const install = _vue => {
     }
   })
 }
+
 export default {
   install,
   Store
